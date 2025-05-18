@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracing-server
+  namespace: petclinic-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracing-server
+  template:
+    metadata:
+      labels:
+        app: tracing-server
+    spec:
+      containers:
+        - name: tracing-server
+          image: openzipkin/zipkin
+          resources:
+            limits:
+              memory: 512Mi
+          ports:
+            - containerPort: 9411
+          env:
+            - name: JAVA_OPTS
+              value: "-XX:UseSVE=0"

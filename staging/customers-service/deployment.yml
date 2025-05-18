@@ -1,0 +1,54 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: petclinic-customers-service
+  name: petclinic-customers-service-deployment
+  namespace: petclinic-staging
+spec:
+  replicas: 1
+  revisionHistoryLimit: 11
+  selector:
+    matchLabels:
+      app: petclinic-customers-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: petclinic-customers-service
+      namespace: petclinic-staging
+    spec:
+      containers:
+        - image: thuanlp/spring-petclinic-customers-service:latest
+          imagePullPolicy: Always
+          name: petclinic-customers-service
+          ports:
+            - containerPort: 8081
+              name: tcp
+              protocol: TCP
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "500m"
+            limits:
+              memory: "500Mi"
+              cpu: "800m"
+          volumeMounts:
+            - mountPath: /app/src/main/resources/application.properties
+              name: petclinic-customers-service-application-properties-config-volume
+              subPath: application.properties
+      imagePullSecrets:
+      - name: dockerhub
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: petclinic-customers-service-application-properties-configmap
+          name: petclinic-customers-service-application-properties-config-volume
+          
