@@ -1,46 +1,46 @@
 
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  labels:
-#    app: petclinic-config-server
-#  name: petclinic-config-server-deployment
-#  namespace: petclinic-dev
-#spec:
-#  replicas: 1
-#  revisionHistoryLimit: 11
-#  selector:
-#    matchLabels:
-#      app: petclinic-config-server
-#  strategy:
-#    rollingUpdate:
-#      maxSurge: 25%
-#      maxUnavailable: 25%
-#    type: RollingUpdate
-#  template:
-#    metadata:
-#      labels:
-#        app: petclinic-config-server
-#      namespace: petclinic-dev
-#    spec:
-#      containers:
-#        - image: thuanlp/spring-petclinic-config-server:latest
-#          imagePullPolicy: Always
-#          name: petclinic-config-server
-#          ports:
-#            - containerPort: 8888
-#              name: tcp
-#              protocol: TCP
-#          volumeMounts:
-#            - mountPath: /app/config/application.properties
-#              name: petclinic-config-server-application-properties-config-volume
-#              subPath: application.properties
-#      imagePullSecrets:
-#        - name: dockerhub
-#      dnsPolicy: ClusterFirst
-#      restartPolicy: Always
-#      volumes:
-#        - configMap:
-#            defaultMode: 420
-#            name: petclinic-config-server-application-properties-configmap
-#          name: petclinic-config-server-application-properties-config-volume
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: petclinic-config-server
+  name: petclinic-config-server-deployment
+  namespace: petclinic-dev
+spec:
+  replicas: 1
+  revisionHistoryLimit: 11
+  selector:
+    matchLabels:
+      app: petclinic-config-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: petclinic-config-server
+      namespace: petclinic-dev
+    spec:
+      containers:
+        - image: thuanlp/spring-petclinic-config-server:latest
+          imagePullPolicy: Always
+          name: petclinic-config-server
+          ports:
+            - containerPort: 8888
+              name: tcp
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config/application.properties
+              name: petclinic-config-server-application-properties-config-volume
+              subPath: application.properties
+      imagePullSecrets:
+        - name: dockerhub
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: petclinic-config-server-application-properties-configmap
+          name: petclinic-config-server-application-properties-config-volume

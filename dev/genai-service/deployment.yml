@@ -1,52 +1,52 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  labels:
-#    app: petclinic-genai-service
-#  name: petclinic-genai-service-deployment
-#  namespace: petclinic-dev
-#spec:
-#  replicas: 1
-#  revisionHistoryLimit: 11
-#  selector:
-#    matchLabels:
-#      app: petclinic-genai-service
-#  strategy:
-#    rollingUpdate:
-#      maxSurge: 25%
-#      maxUnavailable: 25%
-#    type: RollingUpdate
-#  template:
-#    metadata:
-#      labels:
-#        app: petclinic-genai-service
-#      namespace: petclinic-dev
-#    spec:
-#      containers:
-#        - image: thuanlp/spring-petclinic-genai-service:latest
-#          imagePullPolicy: Always
-#          name: petclinic-genai-service
-#          ports:
-#            - containerPort: 8084
-#              name: tcp
-#              protocol: TCP
-#          volumeMounts:
-#            - mountPath: /app/config/application.properties
-#              name: petclinic-genai-service-application-properties-config-volume
-#              subPath: application.properties
-#      initContainers:
-#        - name: wait-for-config-server
-#          image: darthcabs/tiny-tools:1
-#          command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
-#        - name: wait-for-discovery-server
-#          image: darthcabs/tiny-tools:1
-#          command: ["sh", "-c", "until curl -s http://petclinic-discovery-server-service:8761/; do echo waiting for discovery server; sleep 5; done"]
-#      imagePullSecrets:
-#        - name: dockerhub
-#      dnsPolicy: ClusterFirst
-#      restartPolicy: Always
-#      volumes:
-#        - configMap:
-#            defaultMode: 420
-#            name: petclinic-genai-service-application-properties-configmap
-#          name: petclinic-genai-service-application-properties-config-volume
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: petclinic-genai-service
+  name: petclinic-genai-service-deployment
+  namespace: petclinic-dev
+spec:
+  replicas: 1
+  revisionHistoryLimit: 11
+  selector:
+    matchLabels:
+      app: petclinic-genai-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: petclinic-genai-service
+      namespace: petclinic-dev
+    spec:
+      containers:
+        - image: thuanlp/spring-petclinic-genai-service:latest
+          imagePullPolicy: Always
+          name: petclinic-genai-service
+          ports:
+            - containerPort: 8084
+              name: tcp
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config/application.properties
+              name: petclinic-genai-service-application-properties-config-volume
+              subPath: application.properties
+      initContainers:
+        - name: wait-for-config-server
+          image: darthcabs/tiny-tools:1
+          command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
+        - name: wait-for-discovery-server
+          image: darthcabs/tiny-tools:1
+          command: ["sh", "-c", "until curl -s http://petclinic-discovery-server-service:8761/; do echo waiting for discovery server; sleep 5; done"]
+      imagePullSecrets:
+        - name: dockerhub
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: petclinic-genai-service-application-properties-configmap
+          name: petclinic-genai-service-application-properties-config-volume
