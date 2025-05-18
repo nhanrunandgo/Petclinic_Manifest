@@ -23,7 +23,7 @@ spec:
       namespace: petclinic-dev
     spec:
       containers:
-        - image: thuanlp/spring-petclinic-discovery-server:latest
+        - image: runandgo/spring-petclinic-discovery-server:db84d06
           imagePullPolicy: Always
           name: petclinic-discovery-server
           ports:
@@ -36,7 +36,7 @@ spec:
               subPath: application.properties
       initContainers:
         - name: init-discovery-server
-          image: darthcabs/tiny-tools:1
+          image: runandgo/spring-petclinic-discovery-server:db84d06
           command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
       imagePullSecrets:
         - name: dockerhub

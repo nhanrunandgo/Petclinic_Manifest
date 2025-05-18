@@ -24,7 +24,7 @@ spec:
       namespace: petclinic-dev
     spec:
       containers:
-        - image: thuanlp/spring-petclinic-config-server:latest
+        - image: runandgo/spring-petclinic-config-server:db84d06
           imagePullPolicy: Always
           name: petclinic-config-server
           ports:
